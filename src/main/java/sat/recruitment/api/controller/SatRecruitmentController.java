@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import sat.recruitment.api.service.SatRecruitmentService;
+import sat.recruitment.model.user.User;
+import sat.recruitment.model.user.UserBuilder;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -24,51 +26,15 @@ public class SatRecruitmentController {
 		if (messageBody == null) {
 			return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Body is null");
 		}
-		String errors = "";
-
-		validateErrors(messageBody.getName(), messageBody.getEmail(), messageBody.getAddress(), messageBody.getPhone(),
-				errors);
-
+		
+		String errors = validateErrors(messageBody.getName(), messageBody.getEmail(), messageBody.getAddress(), messageBody.getPhone());
 		if (errors != null && errors != "") {
 			return new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
 		}
-
-		User newUser = new User();
-		newUser.setName(messageBody.getName());
-		newUser.setEmail(messageBody.getEmail());
-		newUser.setAddress(messageBody.getAddress());
-		newUser.setPhone(messageBody.getPhone());
-		newUser.setUserType(messageBody.getUserType());
-		newUser.setMoney(messageBody.getMoney());
-
-		if (newUser.getUserType().equals("Normal")) {
-			if (Double.valueOf(newUser.getMoney()) > 100) {
-				Double percentage = Double.valueOf("0.12");
-				// If new user is normal and has more than USD100
-				var gif = Double.valueOf(newUser.getMoney()) * percentage;
-				newUser.setMoney(newUser.getMoney() + gif);
-			}
-			if (Double.valueOf(newUser.getMoney()) < 100) {
-				if (Double.valueOf(newUser.getMoney()) > 10) {
-					var percentage = Double.valueOf("0.8");
-					var gif = Double.valueOf(newUser.getMoney()) * percentage;
-					newUser.setMoney(newUser.getMoney() + gif);
-				}
-			}
-		}
-		if (newUser.getUserType().equals("SuperUser")) {
-			if (Double.valueOf(newUser.getMoney()) > 100) {
-				Double percentage = Double.valueOf("0.20");
-				Double gif = Double.valueOf(newUser.getMoney()) * percentage;
-				newUser.setMoney(newUser.getMoney() + gif);
-			}
-		}
-		if (newUser.getUserType().equals("Premium")) {
-			if (Double.valueOf(newUser.getMoney()) > 100) {
-				Double gif = Double.valueOf(newUser.getMoney()) * 2;
-				newUser.setMoney(newUser.getMoney() + gif);
-			}
-		}
+		
+		UserBuilder builder = new UserBuilder();
+		User newUser = builder.createdUser(messageBody.getName(), messageBody.getEmail(), messageBody.getAddress(), messageBody.getPhone(), messageBody.getUserType(),messageBody.getMoney());
+		newUser.setBonusMoney(messageBody.getMoney());
 
 		if (userService.isUserDuplicated(newUser)) {
 			return new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is duplicated");
@@ -77,7 +43,8 @@ public class SatRecruitmentController {
 		return new ResponseStatusException(HttpStatus.OK, "User created");
 	}
 
-	public void validateErrors(String name, String email, String address, String phone, String errors) {
+	public String validateErrors(String name, String email, String address, String phone) {
+		String errors = "";
 		if (name == null)
 			// Validate if Name is null
 			errors = "The name is required";
@@ -90,6 +57,7 @@ public class SatRecruitmentController {
 		if (phone == null)
 			// Validate if Phone is null
 			errors = errors + " The phone is required";
+		return errors;
 	}
 
 }

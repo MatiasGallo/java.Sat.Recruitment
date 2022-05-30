@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sat.recruitment.api.controller.User;
 import sat.recruitment.api.repository.SatRecruitmentRepository;
+import sat.recruitment.model.user.User;
 
 @Service
 public class SatRecruitmentService {

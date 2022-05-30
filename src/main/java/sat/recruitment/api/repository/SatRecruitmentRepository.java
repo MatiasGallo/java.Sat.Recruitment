@@ -8,7 +8,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import sat.recruitment.api.controller.User;
+import sat.recruitment.model.user.User;
+import sat.recruitment.model.user.UserBuilder;
 
 @Repository
 public class SatRecruitmentRepository {
@@ -22,22 +23,15 @@ public class SatRecruitmentRepository {
 				BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
 				String strLine;
-
+				
+				UserBuilder builder = new UserBuilder();
 				while ((strLine = br.readLine()) != null) {
 					String[] line = strLine.split(",");
-					User user = new User();
-					user.setName(line[0]);
-					user.setEmail(line[1]);
-					user.setPhone(line[2]);
-					user.setAddress(line[3]);
-					user.setUserType(line[4]);
-					user.setMoney(Double.valueOf(line[5]));
+					User user = builder.createdUser(line[0], line[1], line[2], line[3], line[4],Double.valueOf(line[5]));
 					users.add(user);
-
 				}
 				fstream.close();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return users;

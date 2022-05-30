@@ -1,24 +1,25 @@
-package sat.recruitment.api.controller;
+package sat.recruitment.model.user;
 
-public class User {
-	public String name;
-	public String email;
-	public String address;
-	public String phone;
-	public String userType;
-	public Double money;
+public abstract class User {
+	private String name;
+	private String email;
+	private String address;
+	private String phone;
+	private String userType;
+	protected Double money;
+	
+	protected final double thresholdBonus = 100;
 	
 	public User() {
 		
 	}
 
-	public User(String name, String email, String address, String phone, String userType, Double money) {
+	public User(String name, String email, String address, String phone, Double money) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.address = address;
 		this.phone = phone;
-		this.userType = userType;
 		this.money = money;
 	}
 
@@ -54,19 +55,26 @@ public class User {
 		this.phone = phone;
 	}
 
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
 	public Double getMoney() {
 		return money;
 	}
 
 	public void setMoney(Double money) {
 		this.money = money;
+	};
+	
+	public abstract void setBonusMoney(Double money);
+	
+	public void addGift(Double percentage,Double money){
+		var gif = money * percentage;
+		this.setMoney(money + gif);
 	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	};
 }
