@@ -19,12 +19,10 @@ public class SatRecruitmentService {
 		for (User user : users) {
 			if (user.getEmail().equals(newUser.getEmail()) || user.getPhone().equals(newUser.getPhone())) {
 				return true;
-			} else if (user.getName().equals(newUser.getName())) {
-				if (user.getAddress().equals(newUser.getAddress())) {
+			} else if ((user.getName().equals(newUser.getName()) && (user.getAddress().equals(newUser.getAddress() )))) {
 					return true;
 				}
 			}
-		}
 		return false;
 	}
 }
