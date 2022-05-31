@@ -27,7 +27,7 @@ public class SatRecruitmentController {
 			return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Body is null");
 		}
 		
-		String errors = validateErrors(messageBody.getName(), messageBody.getEmail(), messageBody.getAddress(), messageBody.getPhone());
+		String errors = validateErrors(messageBody.getName(), messageBody.getEmail(), messageBody.getAddress(), messageBody.getPhone(), messageBody.getMoney());
 		if (errors != null && errors != "") {
 			return new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
 		}
@@ -43,7 +43,7 @@ public class SatRecruitmentController {
 		return new ResponseStatusException(HttpStatus.OK, "User created");
 	}
 
-	public String validateErrors(String name, String email, String address, String phone) {
+	public String validateErrors(String name, String email, String address, String phone, Double money) {
 		String errors = "";
 		if (name == null)
 			// Validate if Name is null
@@ -57,6 +57,9 @@ public class SatRecruitmentController {
 		if (phone == null)
 			// Validate if Phone is null
 			errors = errors + " The phone is required";
+		if (money == null || money < 0)
+			// Validate if Money is valid
+			errors = errors + " The money amount is required";
 		return errors;
 	}
 
