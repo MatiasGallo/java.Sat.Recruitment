@@ -1,6 +1,13 @@
 package sat.recruitment.model.user;
 
 public abstract class User {
+	
+	public static final String SUPER_USER_TYPE = "SuperUser";
+	
+	public static final String PREMIUM_USER_TYPE = "Premium";
+	
+	public static final String NORMAL_USER_TYPE = "Normal";
+	
 	private String name;
 	private String email;
 	private String address;
@@ -65,7 +72,7 @@ public abstract class User {
 	
 	public abstract void setBonusMoney(Double money);
 	
-	public void addGift(Double percentage,Double money){
+	protected void addGift(Double percentage,Double money){
 		var gif = money * percentage;
 		this.setMoney(money + gif);
 	}
