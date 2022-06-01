@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import sat.recruitment.api.service.SatRecruitmentService;
 import sat.recruitment.model.user.User;
 import sat.recruitment.model.user.UserBuilder;
+import sat.recruitment.model.user.UserDTO;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -22,7 +23,7 @@ public class SatRecruitmentController {
 
 	@PostMapping(value = "/create-user", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseStatusException createUser(@RequestBody User messageBody) {
+	public ResponseStatusException createUser(@RequestBody UserDTO messageBody) {
 		if (messageBody == null) {
 			return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Body is null");
 		}

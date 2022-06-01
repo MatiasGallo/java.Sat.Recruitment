@@ -12,7 +12,6 @@ public abstract class User {
 	private String email;
 	private String address;
 	private String phone;
-	private String userType;
 	protected Double money;
 	
 	protected final double thresholdBonus = 100;
@@ -76,12 +75,4 @@ public abstract class User {
 		var gif = money * percentage;
 		this.setMoney(money + gif);
 	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	};
 }
