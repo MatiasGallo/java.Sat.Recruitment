@@ -1,6 +1,7 @@
 package sat.recruitment.api.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,10 @@ public class SatRecruitmentService {
 	
 	public boolean isUserDuplicated(User newUser) {
 		List<User> users = userRepository.getUsersList();
-		for (User user : users) {
-			if (user.getEmail().equals(newUser.getEmail()) || user.getPhone().equals(newUser.getPhone())) {
-				return true;
-			} else if ((user.getName().equals(newUser.getName()) && (user.getAddress().equals(newUser.getAddress() )))) {
-					return true;
-				}
-			}
-		return false;
+		return users.stream().filter( user -> 
+		user.getEmail().equals(newUser.getEmail())
+		|| user.getPhone().equals(newUser.getPhone())
+		|| ( user.getName().equals(newUser.getName()) && (user.getAddress().equals(newUser.getAddress())) )
+		).limit(1).count() > 0;
 	}
 }
