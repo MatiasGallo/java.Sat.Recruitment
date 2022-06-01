@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 
 import sat.recruitment.api.SatRecruitmentApplication;
 import sat.recruitment.api.controller.SatRecruitmentController;
-import sat.recruitment.model.user.NormalUser;
 import sat.recruitment.model.user.User;
 import sat.recruitment.model.user.UserBuilder;
 
@@ -27,33 +26,20 @@ class ControllerTest {
     
     @Test
     void testCreateUserWithNull() {
-    	User user = builder.createdUser("Carlos", "carlos.ramirez@gmail.com", "+534645213451", null, "SuperUser", 150.0);
+    	User user = builder.createdUser("Carlos", "carlos.ramirez@gmail.com", null, "+534645213451", "SuperUser", 150.0);
     	assertThat(controller.createUser(user).getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
     
     @Test
     void testCreateDuplicateUser() {
-    	NormalUser newUser = new NormalUser();
-		newUser.setName("Raul");
-		newUser.setEmail("Franco.Perez@gmail.com");
-		newUser.setAddress("Colombia 115");
-		newUser.setPhone("+534555213454");
-		newUser.setUserType("Premium");
-		newUser.setMoney(200.0);
+    	User newUser = builder.createdUser("Raul", "Franco.Perez@gmail.com", "Colombia 115", "+534555213454", "Premium", 200.0);
 
     	assertThat(controller.createUser(newUser).getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
     
     @Test
     void testCreateUser() {
-    	NormalUser newUser = new NormalUser();
-		newUser.setName("Raul");
-		newUser.setEmail("Raul@gmail.com");
-		newUser.setAddress("Uruguay 115");
-		newUser.setPhone("+534555252454");
-		newUser.setUserType("Normal");
-		newUser.setMoney(80.0);
-
+    	User newUser = builder.createdUser("Raul", "Raul@gmail.com", "Uruguay 115", "+534555252454", "Normal", 80.0);
     	assertThat(controller.createUser(newUser).getStatus()).isEqualTo(HttpStatus.OK);
     }
 }

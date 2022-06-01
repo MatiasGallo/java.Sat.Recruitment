@@ -27,7 +27,7 @@ public class SatRecruitmentRepository {
 				UserBuilder builder = new UserBuilder();
 				while ((strLine = br.readLine()) != null) {
 					String[] line = strLine.split(",");
-					User user = builder.createdUser(line[0], line[1], line[2], line[3], line[4],Double.valueOf(line[5]));
+					User user = builder.createdUser(line[0], line[1], line[3], line[2], line[4],Double.valueOf(line[5]));
 					users.add(user);
 				}
 				fstream.close();
