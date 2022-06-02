@@ -13,6 +13,7 @@ import sat.recruitment.model.user.User;
 
 @SpringBootTest(classes = SatRecruitmentApplication.class)
 public class RepositoryTest {
+	
 	@Autowired
     private SatRecruitmentRepository repository = new SatRecruitmentRepository();
     
