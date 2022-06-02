@@ -1,6 +1,7 @@
 package sat.recruitment.api.service;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,25 @@ public class SatRecruitmentService {
 	@Autowired
     private SatRecruitmentRepository userRepository;
 	
+	/**
+	 * Returns Predicate that define if user is duplicated:
+	 * 	- Equal Email
+	 * 	- Equal Phone
+	 *  - Equal Name and Address
+	 * @param newUser
+	 * @return Predicate
+	 */
+	private Predicate<User> existPredicate(User newUser) {
+		return (user -> 
+				user.getEmail().equals(newUser.getEmail())
+				|| user.getPhone().equals(newUser.getPhone())
+				|| ( user.getName().equals(newUser.getName()) 
+						&& (user.getAddress().equals(newUser.getAddress())))
+		);
+	}
+	
 	public boolean isUserDuplicated(User newUser) {
 		List<User> users = userRepository.getUsersList();
-		return users.stream().filter( user -> 
-		user.getEmail().equals(newUser.getEmail())
-		|| user.getPhone().equals(newUser.getPhone())
-		|| ( user.getName().equals(newUser.getName()) && (user.getAddress().equals(newUser.getAddress())) )
-		).limit(1).count() > 0;
+		return users.stream().anyMatch(existPredicate(newUser));
 	}
 }
