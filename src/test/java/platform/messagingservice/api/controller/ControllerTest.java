@@ -17,25 +17,14 @@ class ControllerTest {
     private SatRecruitmentController controller;
     
     @Test
-    void testCreateNullUser() {
-    	assertThat(controller.createUser(null).getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-    
-    @Test
-    void testCreateUserWithNull() {
-    	UserDTO newUser = new UserDTO("Carlos", "carlos.ramirez@gmail.com", null, "+534645213451", "SuperUser", 150.0);
-    	assertThat(controller.createUser(newUser).getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-    
-    @Test
     void testCreateDuplicateUser() {
     	UserDTO newUser = new UserDTO("Raul", "Franco.Perez@gmail.com", "Colombia 115", "+534555213454", "Premium", 200.0);
-    	assertThat(controller.createUser(newUser).getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+    	assertThat(controller.createUser(newUser).getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
     
     @Test
     void testCreateUser() {
     	UserDTO newUser = new UserDTO("Raul", "Raul@gmail.com", "Uruguay 115", "+534555252454", "Normal", 80.0);
-    	assertThat(controller.createUser(newUser).getStatus()).isEqualTo(HttpStatus.OK);
+    	assertThat(controller.createUser(newUser).getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }
